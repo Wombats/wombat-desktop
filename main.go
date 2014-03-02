@@ -40,6 +40,7 @@ func handleArgs(args []string) (path string, recursive bool)  {
 
 
 type Command struct {
+	// some GUI/CLI for users to add/remove paths from watch
 	path         string
 	// should status codes be used or should the function be passed?
 	exitP        bool

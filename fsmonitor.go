@@ -9,8 +9,8 @@ import (
 
 
 func StartWatch(path string, recursive bool) (*fsnotify.Watcher, int, error) {
-	//TODO: Check and handle a non-recursive watch request
-
+	// TODO: Check and handle a non-recursive watch request
+	// TODO: Handle directory excludes on startup
 	watched := 0
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
@@ -28,6 +28,8 @@ func StartWatch(path string, recursive bool) (*fsnotify.Watcher, int, error) {
 				watched++
 				return nil
 				// increment how many dirs are watched
+				// TODO: try to find out why the number of directories
+				//       watched seems to be different between executions
 			}(path)
 		}
 		return err
@@ -45,7 +47,6 @@ func EventHandler(watcher *fsnotify.Watcher, manager chan *Command) {
 		select {
 		case ev := <-watcher.Event:
 			//encrypt() upload()
-			// change to a switch?
 			switch {
 			case ev.IsCreate():
 				fmt.Println("Create: ", ev)
@@ -58,11 +59,13 @@ func EventHandler(watcher *fsnotify.Watcher, manager chan *Command) {
 			case ev.IsAttrib():
 				fmt.Println("Attrib: ", ev)
 			default:
-				fmt.Println("Event but not type?")
+				fmt.Println("Something is weird. Event but not type?")
 			}
 		case err := <- watcher.Error:
+			// TODO: handle errors and see why reading from this can cause a block.
 			fmt.Println(err)
 		case com := <-manager:
+			// TODO: Add in ability to add/remove watches from a recieved command
 			if com.exitP {
 				err := watcher.Close()
 				fmt.Println("Returning EventHandler")
