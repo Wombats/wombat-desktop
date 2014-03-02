@@ -40,6 +40,23 @@ func StartWatch(path string, recursive bool) (*fsnotify.Watcher, int, error) {
 }
 
 
-func HandleWatch(watcher fsnotify.Watcher, manager chan *Command) {
-
+func EventHandler(watcher *fsnotify.Watcher, manager chan *Command) {
+	for {
+		select {
+		case ev := <-watcher.Event:
+			fmt.Println(ev)
+			//encrypt() upload()
+		case err := <- watcher.Error:
+			fmt.Println(err)
+		case com := <-manager:
+			if com.exitP {
+				err := watcher.Close()
+				fmt.Println("Returning EventHandler")
+				if err != nil {
+					fmt.Println("Error on close of watch: ", err)
+				}
+				return
+			}
+		}
+	}
 }

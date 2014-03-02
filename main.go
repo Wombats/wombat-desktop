@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
-
+	"os/signal"
+	"time"
 	//"code.google.com/p/go.exp/fsnotify"
 )
 
@@ -42,8 +43,6 @@ func handleArgs(args []string) (path string, recursive bool)  {
 type Command struct {
 	path         string
 	// should status codes be used or should the function be passed?
-	removeWatchP bool
-	addWatchP    bool
 	exitP        bool
 }
 
@@ -52,24 +51,26 @@ func main() {
 
 	path, recursive := handleArgs(os.Args[1:])
 
-	//manager := make(chan *Command)
+	manager := make(chan *Command)
 
 	watcher, watchCount, err := StartWatch(path, recursive)
 	if err != nil {
 		fmt.Println("Error with watcher, main.go line 59:", err)
 	}
-	fmt.Println(watchCount)
 
-	//go HandleWatch(watcher, manager)
+	fmt.Println("Directories watched: ", watchCount)
 
-	for {
-		select {
-		case ev := <-watcher.Event:
-			fmt.Println(ev)
-		case err := <- watcher.Error:
-			fmt.Println(err)
-		}
-	}
+	go EventHandler(watcher, manager)
+
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, os.Kill)
+	// This would block main until a signal is recieved
+	s := <-c
+	com := Command{"", true}
+	manager<- &com
+	time.Sleep(1000 * time.Millisecond)
+	fmt.Println("Got Signal: ", s)
+
+
 	//HandleEvents? or do this in the above and have main deal with SIGNALS and etc
-
 }
