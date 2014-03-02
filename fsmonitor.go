@@ -44,18 +44,20 @@ func EventHandler(watcher *fsnotify.Watcher, manager chan *Command) {
 	for {
 		select {
 		case ev := <-watcher.Event:
-			//encrypt() upload()\
-			if ev.IsCreate() {
+			//encrypt() upload()
+			// change to a switch?
+			switch {
+			case ev.IsCreate():
 				fmt.Println("Create: ", ev)
-			} else if ev.IsDelete() {
+			case ev.IsDelete():
 				fmt.Println("Delete: ", ev)
-			} else if ev.IsModify() {
+			case ev.IsModify():
 				fmt.Println("Modify: ", ev)
-			} else if ev.IsRename() {
+			case ev.IsRename():
 				fmt.Println("Rename: ", ev)
-			} else if ev.IsAttrib() {
+			case ev.IsAttrib():
 				fmt.Println("Attrib: ", ev)
-			} else {
+			default:
 				fmt.Println("Event but not type?")
 			}
 		case err := <- watcher.Error:
