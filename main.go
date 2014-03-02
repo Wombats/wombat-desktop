@@ -65,12 +65,18 @@ func main() {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, os.Kill)
 	// This would block main until a signal is recieved
-	s := <-c
-	com := Command{"", true}
-	manager<- &com
-	time.Sleep(1000 * time.Millisecond)
-	fmt.Println("Got Signal: ", s)
+	//s := <-c
 
+	for {
+		select {
+		case sig := <-c:
+			com := Command{"", true}
+			manager<- &com
+			time.Sleep(1000 * time.Millisecond)
+			fmt.Println("Got Signal: ", sig)
+			return
+		}
+	}
 
 	//HandleEvents? or do this in the above and have main deal with SIGNALS and etc
 }
