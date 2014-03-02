@@ -5,7 +5,6 @@ import (
 	"os"
 	"os/signal"
 	"time"
-	//"code.google.com/p/go.exp/fsnotify"
 )
 
 
@@ -64,8 +63,6 @@ func main() {
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, os.Kill)
-	// This would block main until a signal is recieved
-	//s := <-c
 
 	for {
 		select {
@@ -77,6 +74,4 @@ func main() {
 			return
 		}
 	}
-
-	//HandleEvents? or do this in the above and have main deal with SIGNALS and etc
 }
