@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"code.google.com/p/go.exp/fsnotify"
 )
 
 
@@ -37,9 +39,23 @@ func handleArgs(args []string) (path string, recursive bool)  {
 }
 
 
+type Command struct {
+	path         string
+	removeWatchP bool
+	addWatchP    bool
+	exitP        bool
+}
+
+
 func main() {
 
 	path, recursive := handleArgs(os.Args[1:])
-	fmt.Println(path, recursive)
+
+	manager := make(chan *Command)
+
+
+	AddWatch(path, recursive, manager)
+
+	//HandleEvents? or do this in the above and have main deal with SIGNALS and etc
 
 }
