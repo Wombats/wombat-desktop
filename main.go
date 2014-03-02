@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"code.google.com/p/go.exp/fsnotify"
+	//"code.google.com/p/go.exp/fsnotify"
 )
 
 
@@ -41,6 +41,7 @@ func handleArgs(args []string) (path string, recursive bool)  {
 
 type Command struct {
 	path         string
+	// should status codes be used or should the function be passed?
 	removeWatchP bool
 	addWatchP    bool
 	exitP        bool
@@ -51,11 +52,24 @@ func main() {
 
 	path, recursive := handleArgs(os.Args[1:])
 
-	manager := make(chan *Command)
+	//manager := make(chan *Command)
 
+	watcher, watchCount, err := StartWatch(path, recursive)
+	if err != nil {
+		fmt.Println("Error with watcher, main.go line 59:", err)
+	}
+	fmt.Println(watchCount)
 
-	AddWatch(path, recursive, manager)
+	//go HandleWatch(watcher, manager)
 
+	for {
+		select {
+		case ev := <-watcher.Event:
+			fmt.Println(ev)
+		case err := <- watcher.Error:
+			fmt.Println(err)
+		}
+	}
 	//HandleEvents? or do this in the above and have main deal with SIGNALS and etc
 
 }
