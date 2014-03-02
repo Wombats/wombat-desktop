@@ -48,7 +48,7 @@ func handleEvent(name string, eventType string) {
 	// more or may not be a problem.
 	info, err := os.Lstat(name)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("File or directory %s: %v\n", eventType, name)
 		return
 	}
 	if info.IsDir() {
