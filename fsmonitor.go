@@ -41,6 +41,24 @@ func StartWatch(path string, recursive bool) (*fsnotify.Watcher, int, error) {
 	return watcher, watched, err
 }
 
+//Perhaps this later changes to logEvent or something
+func handleEvent(name string, eventType string) {
+	// after deletion (and potentially rename) we cannot ascertain
+	// if the thing renamed or deleted was a file or directory. This
+	// more or may not be a problem.
+	info, err := os.Lstat(name)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if info.IsDir() {
+		fmt.Printf("Directory %s: %v\n", eventType, name)
+	} else if !(info.IsDir()) {
+		fmt.Printf("File %s: %v\n", eventType, name)
+	}
+	return
+}
+
 
 func EventHandler(watcher *fsnotify.Watcher, manager chan *Command) {
 	for {
@@ -49,15 +67,24 @@ func EventHandler(watcher *fsnotify.Watcher, manager chan *Command) {
 			//encrypt() upload()
 			switch {
 			case ev.IsCreate():
-				fmt.Println("Create: ", ev)
+				handleEvent(ev.Name, "create")
+				watcher.Watch(ev.Name)
+
 			case ev.IsDelete():
-				fmt.Println("Delete: ", ev)
+				handleEvent(ev.Name, "delete")
+				// something like this could be done for rename
+				watcher.RemoveWatch(ev.Name)
+
 			case ev.IsModify():
-				fmt.Println("Modify: ", ev)
-			case ev.IsRename():
-				fmt.Println("Rename: ", ev)
+				handleEvent(ev.Name, "modify")
+
 			case ev.IsAttrib():
-				fmt.Println("Attrib: ", ev)
+				handleEvent(ev.Name, "modify attrib")
+
+			case ev.IsRename():
+				watcher.RemoveWatch(ev.Name)
+				handleEvent(ev.Name, "rename")
+
 			default:
 				fmt.Println("Something is weird. Event but not type?")
 			}
