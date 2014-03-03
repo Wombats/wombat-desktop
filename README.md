@@ -1,4 +1,4 @@
-wombatfs-desktop
+wombat-desktop
 ================
 
-Desktop client for wombatfs.
+Desktop client for wombat.
