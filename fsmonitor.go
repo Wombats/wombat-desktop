@@ -42,7 +42,7 @@ func StartWatch(path string, recursive bool) (*fsnotify.Watcher, int, error) {
 }
 
 //Perhaps this later changes to logEvent or something
-func handleEvent(name string, eventType string) {
+func logEvent(name string, eventType string) {
 	// after deletion (and potentially rename) we cannot ascertain
 	// if the thing renamed or deleted was a file or directory. This
 	// more or may not be a problem.
@@ -67,23 +67,22 @@ func EventHandler(watcher *fsnotify.Watcher, manager chan *Command) {
 			//encrypt() upload()
 			switch {
 			case ev.IsCreate():
-				handleEvent(ev.Name, "create")
 				watcher.Watch(ev.Name)
+				logEvent(ev.Name, "create")
 
 			case ev.IsDelete():
-				handleEvent(ev.Name, "delete")
-				// something like this could be done for rename
 				watcher.RemoveWatch(ev.Name)
+				logEvent(ev.Name, "delete")
 
 			case ev.IsModify():
-				handleEvent(ev.Name, "modify")
+				logEvent(ev.Name, "modify")
 
 			case ev.IsAttrib():
-				handleEvent(ev.Name, "modify attrib")
+				logEvent(ev.Name, "modify attrib")
 
 			case ev.IsRename():
 				watcher.RemoveWatch(ev.Name)
-				handleEvent(ev.Name, "rename")
+				logEvent(ev.Name, "rename")
 
 			default:
 				fmt.Println("Something is weird. Event but not type?")
