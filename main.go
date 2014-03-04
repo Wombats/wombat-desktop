@@ -7,8 +7,7 @@ import (
 	"time"
 )
 
-
-func handleArgs(args []string) (path string, recursive bool)  {
+func handleArgs(args []string) (path string, recursive bool) {
 	// Exists with a status code of 1 on parsing error with a message
 	var err error = nil
 
@@ -38,14 +37,12 @@ func handleArgs(args []string) (path string, recursive bool)  {
 	return path, recursive
 }
 
-
 type Command struct {
 	// some GUI/CLI for users to add/remove paths from watch
-	path         string
+	path string
 	// should status codes be used or should the function be passed?
-	exitP        bool
+	exitP bool
 }
-
 
 func main() {
 
@@ -69,7 +66,7 @@ func main() {
 		select {
 		case sig := <-c:
 			com := Command{"", true}
-			manager<- &com
+			manager <- &com
 			time.Sleep(1000 * time.Millisecond)
 			fmt.Println("Got Signal: ", sig)
 			return

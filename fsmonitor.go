@@ -1,12 +1,11 @@
 package main
 
 import (
+	"code.google.com/p/go.exp/fsnotify"
 	"fmt"
 	"os"
 	"path/filepath"
-	"code.google.com/p/go.exp/fsnotify"
 )
-
 
 func StartWatch(path string, recursive bool) (*fsnotify.Watcher, int, error) {
 	// TODO: Check and handle a non-recursive watch request
@@ -17,9 +16,9 @@ func StartWatch(path string, recursive bool) (*fsnotify.Watcher, int, error) {
 		fmt.Println("Error with establishing watcher, fsmonitor.go line 17:", err)
 	}
 
-	err = filepath.Walk(path, func (path string, info os.FileInfo, err error) error {
+	err = filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() {
-			go func (path string) (err error) {
+			go func(path string) (err error) {
 				err = watcher.Watch(path)
 				if err != nil {
 					fmt.Printf("fsmonitor.go line 25\terror: %v: %v\n", err, path)
@@ -59,7 +58,6 @@ func logEvent(name string, eventType string) {
 	return
 }
 
-
 func EventHandler(watcher *fsnotify.Watcher, manager chan *Command) {
 	for {
 		select {
@@ -87,7 +85,7 @@ func EventHandler(watcher *fsnotify.Watcher, manager chan *Command) {
 			default:
 				fmt.Println("Something is weird. Event but not type?")
 			}
-		case err := <- watcher.Error:
+		case err := <-watcher.Error:
 			// TODO: handle errors and see why reading from this can cause a block.
 			fmt.Println(err)
 		case com := <-manager:
