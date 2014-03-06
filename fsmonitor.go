@@ -10,7 +10,7 @@ import (
 func StartWatch(path string, recursive bool, excludes []string) (*fsnotify.Watcher, int, error) {
 	// TODO: Check and handle a non-recursive watch request
 	// TODO: Handle directory excludes on startup
-	watched := 0
+  	watched := 0
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		fmt.Println("Error with establishing watcher, fsmonitor.go line 17:", err)
@@ -26,7 +26,6 @@ func StartWatch(path string, recursive bool, excludes []string) (*fsnotify.Watch
 				}
 				watched++
 				return nil
-				// increment how many dirs are watched
 				// TODO: try to find out why the number of directories
 				//       watched seems to be different between executions
 			}(path)

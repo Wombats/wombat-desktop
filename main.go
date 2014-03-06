@@ -45,8 +45,10 @@ type Command struct {
 }
 
 func main() {
+	arr := []string{"b", "c", "a"}
+	fmt.Println(IsMember("a", arr))
 	path, recursive := handleArgs(os.Args[1:])
-	excludes := []string{"asd"}
+	excludes := []string{"/home/gaige/Dropbox/school"}
 	manager := make(chan *Command)
 
 	watcher, watchCount, err := StartWatch(path, recursive, excludes)
