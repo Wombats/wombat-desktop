@@ -46,7 +46,11 @@ type Command struct {
 
 func main() {
 	path, recursive := handleArgs(os.Args[1:])
-	excludes := []string{"asd"}
+	excludes := []string{"/home/gaige"}
+	//excludes := []string{}
+	// reassign with results from the walk of the excludes
+	excludes = CollectExcludes(excludes)
+
 	manager := make(chan *Command)
 
 	watcher, watchCount, err := StartWatch(path, recursive, excludes)

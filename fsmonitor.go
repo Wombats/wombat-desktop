@@ -17,8 +17,9 @@ func StartWatch(path string, recursive bool, excludes []string) (*fsnotify.Watch
 	}
 
 	err = filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
-		if info.IsDir() {
+		if info.IsDir() && !(HasMember(excludes, path)) {
 			go func(path string) (err error) {
+				fmt.Println(path)
 				err = watcher.Watch(path)
 				if err != nil {
 					fmt.Printf("fsmonitor.go line 25\terror: %v: %v\n", err, path)
