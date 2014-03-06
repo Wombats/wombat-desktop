@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 )
 
-func StartWatch(path string, recursive bool) (*fsnotify.Watcher, int, error) {
+func StartWatch(path string, recursive bool, excludes []string) (*fsnotify.Watcher, int, error) {
 	// TODO: Check and handle a non-recursive watch request
 	// TODO: Handle directory excludes on startup
 	watched := 0

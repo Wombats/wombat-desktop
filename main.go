@@ -45,12 +45,11 @@ type Command struct {
 }
 
 func main() {
-
 	path, recursive := handleArgs(os.Args[1:])
-
+	excludes := []string{"asd"}
 	manager := make(chan *Command)
 
-	watcher, watchCount, err := StartWatch(path, recursive)
+	watcher, watchCount, err := StartWatch(path, recursive, excludes)
 	if err != nil {
 		fmt.Println("Error with watcher, main.go line 59:", err)
 	}
