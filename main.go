@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"encoding/json"
 	"os"
 	"os/signal"
 	"time"
@@ -39,6 +40,12 @@ func handleArgs(args []string) (path string, recursive bool) {
 }
 
 
+type Configuration struct {
+	WatchDirs []string
+	Excludes []string
+}
+
+
 type Command struct {
 	// some GUI/CLI for users to add/remove paths from watch
 	path string
@@ -47,7 +54,21 @@ type Command struct {
 }
 
 
+func readConf(confPath string) {
+	file, err := os.Open(confPath)
+	if err != nil {
+		fmt.Println("File read error: ", err)
+	}
+	decoder := json.NewDecoder(file)
+	configuration := &Configuration{}
+	decoder.Decode(&configuration)
+
+	fmt.Println(configuration.WatchDirs, configuration.Excludes)
+}
+
+
 func main() {
+	readConf("testconf.json")
 	path, recursive := handleArgs(os.Args[1:])
 	// TODO: get these values from somewhere
 	excludes := []string{"/home/gaige/Dropbox/school"}
