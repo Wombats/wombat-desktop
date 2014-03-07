@@ -23,7 +23,7 @@ func CollectExcludes(excludePaths []string) ([]string){
 		})
 
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println("Error collecting excludes: ", err)
 		}
 	}
 	return excludes

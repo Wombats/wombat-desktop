@@ -48,8 +48,6 @@ type Command struct {
 
 
 func main() {
-	arr := []string{"b", "c", "a"}
-	fmt.Println(IsMember("a", arr))
 	path, recursive := handleArgs(os.Args[1:])
 	// TODO: get these values from somewhere
 	excludes := []string{"/home/gaige/Dropbox/school"}
@@ -62,7 +60,7 @@ func main() {
 		fmt.Println("Error with watcher, main.go line 59:", err)
 	}
 
-	fmt.Println("Directories watched: ", watchCount)
+	fmt.Println("\nDirectories watched: ", watchCount, "\n")
 
 	go EventHandler(watcher, manager)
 

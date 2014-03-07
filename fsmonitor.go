@@ -19,7 +19,6 @@ func StartWatch(path string, recursive bool, excludes []string) (*fsnotify.Watch
 	err = filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() && !(HasMember(excludes, path)) {
 			go func(path string) (err error) {
-				fmt.Println(path)
 				err = watcher.Watch(path)
 				if err != nil {
 					fmt.Printf("fsmonitor.go line 25\terror: %v: %v\n", err, path)
@@ -87,7 +86,7 @@ func EventHandler(watcher *fsnotify.Watcher, manager chan *Command) {
 			}
 		case err := <-watcher.Error:
 			// TODO: handle errors and see why reading from this can cause a block.
-			fmt.Println(err)
+			fmt.Println("error reading error in fsmonitor: ", err)
 		case com := <-manager:
 			// TODO: Add in ability to add/remove watches from a recieved command
 			if com.exitP {
