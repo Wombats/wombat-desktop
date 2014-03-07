@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+
 func handleArgs(args []string) (path string, recursive bool) {
 	// Exists with a status code of 1 on parsing error with a message
 	var err error = nil
@@ -37,6 +38,7 @@ func handleArgs(args []string) (path string, recursive bool) {
 	return path, recursive
 }
 
+
 type Command struct {
 	// some GUI/CLI for users to add/remove paths from watch
 	path string
@@ -44,11 +46,15 @@ type Command struct {
 	exitP bool
 }
 
+
 func main() {
 	arr := []string{"b", "c", "a"}
 	fmt.Println(IsMember("a", arr))
 	path, recursive := handleArgs(os.Args[1:])
+	// TODO: get these values from somewhere
 	excludes := []string{"/home/gaige/Dropbox/school"}
+	excludes = CollectExcludes(excludes)
+
 	manager := make(chan *Command)
 
 	watcher, watchCount, err := StartWatch(path, recursive, excludes)
