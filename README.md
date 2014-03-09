@@ -9,8 +9,8 @@ Built with fsmonitor for cross platform support.
 
 Running:
 --------
-CUrrently only testing on linux.
+Currently only testing on linux.
 
     wombat-desktop path/to/watch true
     OR
-    go run main.go fsnmonitor.go $HOME true
+    go run main.go fsnmonitor.go /paath/to/watch true
