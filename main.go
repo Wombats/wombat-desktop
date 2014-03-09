@@ -54,7 +54,7 @@ type Command struct {
 }
 
 
-func readConf(confPath string) {
+func readConf(confPath string) (Configuration, error) {
 	file, err := os.Open(confPath)
 	if err != nil {
 		fmt.Println("File read error: ", err)
@@ -63,16 +63,21 @@ func readConf(confPath string) {
 	configuration := &Configuration{}
 	decoder.Decode(&configuration)
 
-	fmt.Println(configuration.WatchDirs, configuration.Excludes)
+	return *configuration, err
 }
 
 
 func main() {
-	readConf("testconf.json")
-	path, recursive := handleArgs(os.Args[1:])
-	// TODO: get these values from somewhere
-	excludes := []string{"/home/gaige/Dropbox/school"}
-	excludes = CollectExcludes(excludes)
+	conf, err := readConf("testconf.json")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(conf)
+
+	//path, recursive := handleArgs(os.Args[1:])
+	recursive := true
+	excludes := CollectExcludes(conf.Excludes)
+	path := conf.WatchDirs[0]
 
 	manager := make(chan *Command)
 
@@ -93,7 +98,7 @@ func main() {
 		case sig := <-c:
 			com := Command{"", true}
 			manager <- &com
-			time.Sleep(1000 * time.Millisecond)
+			time.Sleep(100 * time.Millisecond)
 			fmt.Println("Got Signal: ", sig)
 			return
 		}
