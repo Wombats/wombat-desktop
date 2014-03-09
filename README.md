@@ -11,6 +11,9 @@ Running:
 --------
 Currently only testing on linux.
 
-    wombat-desktop path/to/watch true
-    OR
-    go run main.go fsnmonitor.go /paath/to/watch true
+change the values in testconf.json (although it has the WatchDirs in an array, it only currently accepts one value).
+
+run the following after go install:
+   
+    wombat-desktop
+    
