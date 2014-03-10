@@ -9,7 +9,6 @@ import (
 
 func StartWatch(path string, recursive bool, excludes []string) (*fsnotify.Watcher, int, error) {
 	// TODO: Check and handle a non-recursive watch request
-	// TODO: Handle directory excludes on startup
   	watched := 0
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
@@ -39,7 +38,7 @@ func StartWatch(path string, recursive bool, excludes []string) (*fsnotify.Watch
 	return watcher, watched, err
 }
 
-//Perhaps this later changes to logEvent or something
+
 func logEvent(name string, eventType string) {
 	// after deletion (and potentially rename) we cannot ascertain
 	// if the thing renamed or deleted was a file or directory. This
@@ -56,6 +55,7 @@ func logEvent(name string, eventType string) {
 	}
 	return
 }
+
 
 func EventHandler(watcher *fsnotify.Watcher, manager chan *Command) {
 	for {
