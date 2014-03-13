@@ -14,11 +14,11 @@ Running:
 Built with [fsmonitor](https://github.com/howeyc/fsnotify) for cross platform support.
 
 
-Currently only testing on linux.
+Wombat is being developed on linux (Debian jessie x64) and is currently known to work on winows 7.
 
 
-change the values in testconf.json (although it has the WatchDirs in an array, it only currently accepts one value).
+change the values in testconf.json.
 
-run the following after go install:
-   
+compile it and run:
+
     wombat-desktop
