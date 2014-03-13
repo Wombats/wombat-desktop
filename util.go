@@ -30,7 +30,7 @@ func CollectExcludes(excludePaths []string) ([]string){
 }
 
 
-func HasMember(arr []string, item string) (bool) {
+func IsSubDir(arr []string, item string) (bool) {
 	for i := 0; i < len(arr); i++ {
 		if arr[i] == item {
 			return true
