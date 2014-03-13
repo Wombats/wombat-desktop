@@ -27,8 +27,6 @@ func StartWatch(paths []string, recursive bool, excludes []string) (*fsnotify.Wa
 						return err
 					}
 					return nil
-					// TODO: try to find out why the number of directories
-					//       watched seems to be different between executions
 				}(path)
 			}
 			return err
