@@ -2,12 +2,13 @@ package main
 
 import (
 	"code.google.com/p/go.exp/fsnotify"
+
 	"fmt"
 	"os"
 	"path/filepath"
 )
 
-func StartWatch(path string, recursive bool, excludes []string) (*fsnotify.Watcher, int, error) {
+func StartWatch(paths []string, recursive bool, excludes []string) (*fsnotify.Watcher, int, error) {
 	// TODO: Check and handle a non-recursive watch request
   	watched := 0
 	watcher, err := fsnotify.NewWatcher()
@@ -15,26 +16,27 @@ func StartWatch(path string, recursive bool, excludes []string) (*fsnotify.Watch
 		fmt.Println("Error with establishing watcher, fsmonitor.go line 17:", err)
 	}
 
-	err = filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
-		if info.IsDir() && !(HasMember(excludes, path)) {
-			go func(path string) (err error) {
-				err = watcher.Watch(path)
-				if err != nil {
-					fmt.Printf("fsmonitor.go line 25\terror: %v: %v\n", err, path)
-					return err
-				}
-				watched++
-				return nil
-				// TODO: try to find out why the number of directories
-				//       watched seems to be different between executions
-			}(path)
+	for _, path := range paths {
+		err = filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
+			if info.IsDir() && !(IsSubDir(excludes, path)) {
+				func(path string) (err error) {
+					err = watcher.Watch(path)
+					watched++
+					if err != nil {
+						fmt.Printf("fsmonitor.go line 25\terror: %v: %v\n", err, path)
+						return err
+					}
+					return nil
+					// TODO: try to find out why the number of directories
+					//       watched seems to be different between executions
+				}(path)
+			}
+			return err
+		})
+		if err != nil {
+			fmt.Println("Error with walking filepath, fsmonitor.go line 36:", err)
 		}
-		return err
-	})
-	if err != nil {
-		fmt.Println("Error with walking filepath, fsmonitor.go line 36:", err)
 	}
-
 	return watcher, watched, err
 }
 

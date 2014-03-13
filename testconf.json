@@ -1,4 +1,4 @@
 {
-    "WatchDirs": ["/home/gaige/Dropbox"],
-    "Excludes": ["/home/gaige/bin/"]
+    "WatchDirs": ["/home/gaige/test"],
+    "Excludes": ["/home/gaige/test/scary"]
 }

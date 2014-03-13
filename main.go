@@ -74,16 +74,12 @@ func main() {
 	}
 	fmt.Println(conf)
 
-	//path, recursive := handleArgs(os.Args[1:])
 	recursive := true
-	excludes := CollectExcludes(conf.Excludes)
-	path := conf.WatchDirs[0]
-
 	manager := make(chan *Command)
 
-	watcher, watchCount, err := StartWatch(path, recursive, excludes)
+	watcher, watchCount, err := StartWatch(conf.WatchDirs, recursive, CollectExcludes(conf.Excludes))
 	if err != nil {
-		fmt.Println("Error with watcher, main.go line 59:", err)
+		fmt.Println(err)
 	}
 
 	fmt.Println("\nDirectories watched: ", watchCount, "\n")
