@@ -27,10 +27,11 @@ API:
 __This has not yet been implemented.__
 
 For web and desktop clients there should be a singular route, '/api'. Data, specific methods, etc. should be called from within the request parameters.
-* Create
-* Delete
-* Modify
-* Move / Rename (perhaps just a function that calls delete and create?)
+  * Create
+  * Delete
+  * Modify
+  * Move / Rename
+
 
         { 
           "method" : "create",
