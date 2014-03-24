@@ -34,6 +34,6 @@ For web and desktop clients there should be a singular route, '/api'. Data, spec
 
         { 
           "method" : "create",
-          "auth"   : "however we do auth (probably desktop only?)",
+          "auth"   : "however we do auth (probably desktop only? Via the web a user would be auth'ed already.)",
           "data"   : "encrypedFileStuff",
         }
