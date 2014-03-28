@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 )
 
+
 func StartWatch(paths []string, recursive bool, excludes []string) (*fsnotify.Watcher, int, error) {
 	// TODO: Check and handle a non-recursive watch request
   	watched := 0

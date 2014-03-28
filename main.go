@@ -76,7 +76,7 @@ func main() {
 
 	recursive := true
 	manager := make(chan *Command)
-
+	IndexAndCompare(conf.WatchDirs, CollectExcludes(conf.Excludes))
 	watcher, watchCount, err := StartWatch(conf.WatchDirs, recursive, CollectExcludes(conf.Excludes))
 	if err != nil {
 		fmt.Println(err)

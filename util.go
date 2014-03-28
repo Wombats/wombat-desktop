@@ -9,7 +9,7 @@ import (
 )
 
 
-func CollectExcludes(excludePaths []string) ([]string){
+func CollectExcludes(excludePaths []string) ([]string) {
 
 	excludes := make([]string, 1, 1)
 
