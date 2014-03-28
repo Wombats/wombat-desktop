@@ -21,10 +21,10 @@ func IndexAndCompare(paths []string, excludes []string) {
 
 
 func generateLocalIndex(paths []string) {
-	index := make([]Path, 1, 2)
+	//index := make([]Path, 1, 2)
 	for _, path := range paths {
 		err := filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
-			index = append(index, info)
+			//index = append(index, time.Now())
 			fmt.Println(info.ModTime())
 			return err
 		})
