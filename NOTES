@@ -1,0 +1,20 @@
+Application Acrhitecture:
+
+    Threads:
+             Communiciation with gui or from cli happens with Main
+        Main ----------------------------------------------------->
+                 \
+                  \As events happen they are queued for the Handler
+            Watcher ----------------------------------------->
+                        \
+                         \Events are compiled and synchronized
+                 Handler  ------------------------------>
+
+
+Synchronization process:
+
+    1. Event occurs
+    2. Push event object onto queue
+    3. Pop event from queue
+    4. Log event occurrence with info from event object
+    5. Encrypt file chunk at a time and upload chunks that have been encrypted
