@@ -9,7 +9,7 @@ Wombat is an end-to-end encrypted file sync service for everyone. This is the de
 
 Running:
 --------
-Built with [fsmonitor](https://github.com/howeyc/fsnotify) for cross platform support.
+Built with [fsnotify](https://github.com/howeyc/fsnotify) for cross platform support.
 
 
 Wombat is being developed on linux (Debian jessie x64) and is currently known to work on winows 7.
